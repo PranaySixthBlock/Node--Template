@@ -5,13 +5,46 @@ var schema = mongoose.Schema({
     roleName : {type: String, required: true},
     company  : {type: mongoose.Schema.Types.ObjectId, ref: 'company', required: true},
     status   : {type: Boolean, required: false, default: 1},
-    
+    dashboard :{
+      canCreate     : {type: Boolean, default: 1, required: false},
+      canView       : {type: Boolean, default: 1, required: false},
+      canUpdate     : {type: Boolean, default: 1, required: false},
+      canDelete     : {type: Boolean, default: 1, required: false},
+      sequence      : {type: Number, default: 1, required: false},
+      isMenu        : {type: Boolean, default: 1, required: false},
+      parent        : {type: String, default: "dashboard", required: false}
+    },
+    settings :{
+      canCreate     : {type: Boolean, default: 1, required: false},
+      canView       : {type: Boolean, default: 1, required: false},
+      canUpdate     : {type: Boolean, default: 1, required: false},
+      canDelete     : {type: Boolean, default: 1, required: false},
+      sequence      : {type: Number, default: 3, required: false},
+      isMenu        : {type: Boolean, default: 0, required: false},
+      parent        : {type: String, default: "settings", required: false}
+    },
+    locations :{
+      canCreate     : {type: Boolean, default: 1, required: false},
+      canView       : {type: Boolean, default: 1, required: false},
+      canUpdate     : {type: Boolean, default: 1, required: false},
+      canDelete     : {type: Boolean, default: 1, required: false},
+      isMenu        : {type: Boolean, default: 0, required: false},
+      parent        : {type: String, default: "settings", required: false}
+    },
+    company_settings :{
+      canCreate     : {type: Boolean, default: 1, required: false},
+      canView       : {type: Boolean, default: 1, required: false},
+      canUpdate     : {type: Boolean, default: 1, required: false},
+      canDelete     : {type: Boolean, default: 1, required: false},
+      isMenu        : {type: Boolean, default: 0, required: false},
+      parent        : {type: String, default: "settings", required: false}
+    },
     user_management :{
       canCreate     : {type: Boolean, default: 0, required: false},
       canView       : {type: Boolean, default: 0, required: false},
       canUpdate     : {type: Boolean, default: 0, required: false},
       canDelete     : {type: Boolean, default: 0, required: false},
-      sequence      : {type: Number, default: 4, required: false},
+      sequence      : {type: Number, default: 2, required: false},
       isMenu        : {type: Boolean, default: 1, required: false},
       parent        : {type: String, default: "user_management", required: false}
     },

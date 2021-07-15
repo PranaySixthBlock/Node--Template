@@ -21,6 +21,12 @@ addNewUserRole: async function(companyId, userId, payload, role){
             company   : companyId,
             roleName  : payload.roleName,
             createdBy : userId,
+            dashboard : payload.hasOwnProperty("dashboard")?{
+                canCreate     : payload.dashboard.canCreate?payload.dashboard.canCreate:0,
+                canView       : payload.dashboard.canView?payload.dashboard.canView:0,
+                canUpdate     : payload.dashboard.canUpdate?payload.dashboard.canUpdate:0,
+                canDelete     : payload.dashboard.canDelete?payload.dashboard.canDelete:0
+            }:0,
             user_management : payload.hasOwnProperty("user_management")?{
                 canCreate     : payload.user_management.canCreate?payload.user_management.canCreate:0,
                 canView       : payload.user_management.canView?payload.user_management.canView:0,
@@ -39,7 +45,24 @@ addNewUserRole: async function(companyId, userId, payload, role){
                 canUpdate     : payload.permissions.canUpdate?payload.permissions.canUpdate:0,
                 canDelete     : payload.permissions.canDelete?payload.permissions.canDelete:0
             }:0,
-            
+            settings : payload.hasOwnProperty("settings")?{
+                canCreate     : payload.settings.canCreate?payload.settings.canCreate:0,
+                canView       : payload.settings.canView?payload.settings.canView:0,
+                canUpdate     : payload.settings.canUpdate?payload.settings.canUpdate:0,
+                canDelete     : payload.settings.canDelete?payload.settings.canDelete:0
+            }:0,
+            locations : payload.hasOwnProperty("locations")?{
+                canCreate     : payload.locations.canCreate?payload.locations.canCreate:0,
+                canView       : payload.locations.canView?payload.locations.canView:0,
+                canUpdate     : payload.locations.canUpdate?payload.locations.canUpdate:0,
+                canDelete     : payload.locations.canDelete?payload.locations.canDelete:0
+            }:0,
+            company_settings : payload.hasOwnProperty("company_settings")?{
+                canCreate     : payload.company_settings.canCreate?payload.company_settings.canCreate:0,
+                canView       : payload.company_settings.canView?payload.company_settings.canView:0,
+                canUpdate     : payload.company_settings.canUpdate?payload.company_settings.canUpdate:0,
+                canDelete     : payload.company_settings.canDelete?payload.company_settings.canDelete:0
+            }:0,
         }));
         data.save();
         if(err) {TE(err.message, true);}
@@ -73,8 +96,8 @@ getCompanyUserRoles: async function(companyId, role){
                         date: "$createdAt"
                     }
                 },
-                "company": 1, "roleName": 1, "status": 1 ,
-                "users": 1, "permissions": 1, "user_management": 1
+                "company": 1, "roleName": 1,  "dashboard": 1, "settings": 1,
+                "users": 1, "permissions": 1, "user_management": 1, "locations": 1, "company_settings": 1
             }
         }
     ]));
@@ -99,6 +122,12 @@ updateUserRolePermissions: async function(permissionId, payload, role){
     if(permissionData){
         permissionData.roleName  = payload.roleName?payload.roleName:permissionData.roleName;
         permissionData.status    = payload.status?payload.status:permissionData.status;
+        if(payload.hasOwnProperty("dashboard")){
+            permissionData.dashboard.canCreate = payload.dashboard.canCreate;
+            permissionData.dashboard.canView   = payload.dashboard.canView;
+            permissionData.dashboard.canUpdate = payload.dashboard.canUpdate;
+            permissionData.dashboard.canDelete = payload.dashboard.canDelete;
+        }
 
         if(payload.hasOwnProperty("user_management")){
             permissionData.user_management.canCreate = payload.user_management.canCreate;
@@ -107,7 +136,6 @@ updateUserRolePermissions: async function(permissionId, payload, role){
             permissionData.user_management.canDelete = payload.user_management.canDelete;
         }
         
-
         if(payload.hasOwnProperty("users")){
             permissionData.users.canCreate = payload.users.canCreate;
             permissionData.users.canView   = payload.users.canView;
@@ -122,7 +150,26 @@ updateUserRolePermissions: async function(permissionId, payload, role){
             permissionData.permissions.canDelete = payload.permissions.canDelete;
         }
 
+        if(payload.hasOwnProperty("settings")){
+            permissionData.settings.canCreate = payload.settings.canCreate;
+            permissionData.settings.canView   = payload.settings.canView;
+            permissionData.settings.canUpdate = payload.settings.canUpdate;
+            permissionData.settings.canDelete = payload.settings.canDelete;
+        }
         
+        if(payload.hasOwnProperty("locations")){
+            permissionData.locations.canCreate = payload.locations.canCreate;
+            permissionData.locations.canView   = payload.locations.canView;
+            permissionData.locations.canUpdate = payload.locations.canUpdate;
+            permissionData.locations.canDelete = payload.locations.canDelete;
+        }
+
+        if(payload.hasOwnProperty("company_settings")){
+            permissionData.company_settings.canCreate = payload.company_settings.canCreate;
+            permissionData.company_settings.canView   = payload.company_settings.canView;
+            permissionData.company_settings.canUpdate = payload.company_settings.canUpdate;
+            permissionData.company_settings.canDelete = payload.company_settings.canDelete;
+        }
         [err,data] = await to(permissionData.save());
         if(err) {TE(err.message, true);}
 
@@ -140,7 +187,8 @@ updateUserRolePermissions: async function(permissionId, payload, role){
                             date: "$createdAt"
                         }
                     },
-                    "company": 1, "roleName": 1, "users": 1, "permissions": 1, "user_management": 1 , "status": 1
+                    "company": 1, "roleName": 1, "users": 1, "permissions": 1, "user_management": 1,
+                    "dashboard": 1, "settings": 1, "locations": 1, "company_settings": 1
                 }
             }
         ]));
@@ -172,7 +220,7 @@ getUserPermissionsById: async function(user){
 
     [err, data] = await to(CompanyContacts.findById(user).populate('role'));
     if(err) {TE(err.message, true);}
-    
+    console.log(user);
     return data?data.role:false;
 },
 

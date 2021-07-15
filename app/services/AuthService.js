@@ -95,6 +95,12 @@ createNewCustomer: async function(payload){
             roleName : "SUPERUSER",
             company  : customerObj._id,
             
+            dashboard : {
+                canCreate : 1,
+                canView   : 1,
+                canUpdate : 1,
+                canDelete : 1
+            },
             user_management : {
                 canCreate : 1,
                 canView   : 1,
@@ -112,6 +118,24 @@ createNewCustomer: async function(payload){
                 canView       : 1,
                 canUpdate     : 1,
                 canDelete     : 1
+            },
+            settings : {
+                canCreate : 1,
+                canView   : 1,
+                canUpdate : 1,
+                canDelete : 1
+            },
+            locations : {
+                canCreate : 1,
+                canView   : 1,
+                canUpdate : 1,
+                canDelete : 1
+            },
+            company_settings : {
+                canCreate : 1,
+                canView   : 1,
+                canUpdate : 1,
+                canDelete : 1
             }
         });
         [err, userRole] = await to(newRole.save());
