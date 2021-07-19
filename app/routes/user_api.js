@@ -25,6 +25,11 @@ var CronJobController= require('../controllers/CronJobController');
 var ReportsController = require('../controllers/ReportsController');
 var AuditAssetsController = require('../controllers/AuditAssetsController');
 
+
+var CountryDropdownController = require('../controllers/CountryDropdownController');
+var StateDropdownController = require('../controllers/StateDropdownController');
+var CityDropdownController = require('../controllers/CityDropdownController');
+
 router.post("/default/registartion/user",AuthController.customerRegister);
 router.post("/company/user/signin", AuthController.customerlogin);
 router.get("/all/menus", TokenAuth.UserAuth, MenuController.getAllDropDowns);
@@ -44,6 +49,44 @@ router.post("/forgot/password", CompanyContactsController.resetPassword);
 router.post("/company/social/registartion", AuthController.userSocialRegister);
 router.post("/company/user/social/signin",AuthController.userSocialSignIn);
 
+
+//country Dropdowns Routes
+router.post('/create/new/user/dropdown/:companyId', CountryDropdownController.createUserDropdown);
+router.get('/all/user/dropdowns/:companyId', CountryDropdownController.getAllCompanyDropdowns);
+router.put('/update/company/dropdown/:dId', CountryDropdownController.updateDropdown);
+router.get('/get/company/dropdown/:dId', CountryDropdownController.getDropdownData);
+
+router.get('/all/user/dropdowns/bytype/:typeName/:companyId', CountryDropdownController.getAllCompanyDropdownsByType);
+
+
+//filtered data
+router.post('/get/filtered/state/data', StateDropdownController.listOfFilteredCompanystates);
+// {
+//     "countryId":"",
+//     "company":"",
+//     "stateId":""
+// }
+
+//state Dropdowns Routes
+router.post('/create/new/state/dropdown/:companyId', StateDropdownController.createStateDropdown);
+router.get('/all/state/dropdowns/:companyId', StateDropdownController.getAllCompanyStateDropdowns);
+router.put('/update/company/state/dropdown/:dId', StateDropdownController.updateStateDropdown);
+router.get('/get/company/state/dropdown/:dId', StateDropdownController.getStateDropdownData);
+
+//city Dropdowns Routes
+router.post('/create/new/city/dropdown/:companyId', CityDropdownController.createCityDropdown);
+router.get('/all/city/dropdowns/:companyId', CityDropdownController.getAllCompanyCityDropdowns);
+router.put('/update/company/city/dropdown/:dId', CityDropdownController.updateCityDropdown);
+router.get('/get/company/city/dropdown/:dId', CityDropdownController.getCityDropdownData);
+
+
+
+
+
+
+
+
+
 //CronJob API
 router.get("/cronjob/:company", CronJobController.cronJobFunction);
 
@@ -62,12 +105,12 @@ router.get('/display/tickets/images/:companyId/:ticketId', TicketController.getT
 router.delete('/delete/ticket/image/byId/:ticketId/:imageId', TicketController.deleteTicketImage);
 
 //User Dropdowns Routes
-router.post('/create/new/user/menu/:companyId', TokenAuth.UserAuth, DropdownController.createUserDropdown);
-router.get('/all/user/dropdowns/:companyId', DropdownController.getAllCompanyDropdowns);
-router.put('/update/company/dropdown/:dId', TokenAuth.UserAuth, DropdownController.updateDropdown);
-router.get('/get/company/dropdown/:dId', DropdownController.getDropdownData);
-router.get('/get/company/groupwise/dropdowns/:type/:companyId', TokenAuth.UserAuth, DropdownController.getGroupWiseDropdowns);
-router.put('/update/company/groupwise/dropdown/:type/:dId', TokenAuth.UserAuth, DropdownController.updateGroupWiseDropdown);
+// router.post('/create/new/user/menu/:companyId', TokenAuth.UserAuth, DropdownController.createUserDropdown);
+// router.get('/all/user/dropdowns/:companyId', DropdownController.getAllCompanyDropdowns);
+// router.put('/update/company/dropdown/:dId', TokenAuth.UserAuth, DropdownController.updateDropdown);
+// router.get('/get/company/dropdown/:dId', DropdownController.getDropdownData);
+// router.get('/get/company/groupwise/dropdowns/:type/:companyId', TokenAuth.UserAuth, DropdownController.getGroupWiseDropdowns);
+// router.put('/update/company/groupwise/dropdown/:type/:dId', TokenAuth.UserAuth, DropdownController.updateGroupWiseDropdown);
 router.get('/company/asset/dropdown/values/:companyId', DropdownController.assetDropdowns);
 
 //Locations Routes
