@@ -29,6 +29,7 @@ var AuditAssetsController = require('../controllers/AuditAssetsController');
 var CountryDropdownController = require('../controllers/CountryDropdownController');
 var StateDropdownController = require('../controllers/StateDropdownController');
 var CityDropdownController = require('../controllers/CityDropdownController');
+var TenderController = require('../controllers/TenderController');
 
 router.post("/default/registartion/user",AuthController.customerRegister);
 router.post("/company/user/signin", AuthController.customerlogin);
@@ -66,6 +67,23 @@ router.post('/get/filtered/state/data', StateDropdownController.listOfFilteredCo
 //     "company":"",
 //     "stateId":""
 // }
+
+// Tender routes
+router.post('/create/new/tender/:companyId',TokenAuth.UserAuth, TenderController.createTender);
+router.get('/all/tenders/:companyId', TokenAuth.UserAuth, TenderController.getAllTenders);
+router.put('/update/company/tender/:tId',TokenAuth.UserAuth, TenderController.updateTenderData);
+router.get('/get/company/tender/:tId',TokenAuth.UserAuth, TenderController.getTenderData);
+
+
+//all tender page dropdowns
+
+router.get('/get/company/tender/dropdown/values/:companyId', TenderController.TenderDropdowns);
+
+router.get('/get/state/dropdown/values/:countryId', TenderController.TenderStateDropdowns);
+
+router.get('/get/city/dropdown/values/:stateId', TenderController.tenderCityDropdown);
+
+router.get('/get/roles/dropdown/values/:companyId', TenderController.companyRoleDropdown);
 
 //state Dropdowns Routes
 router.post('/create/new/state/dropdown/:companyId', StateDropdownController.createStateDropdown);
